@@ -2,6 +2,8 @@
 
 namespace Elecena\XmlIterator;
 
+use Elecena\XmlIterator\Exceptions\ParsingError;
+
 /**
  * Implements a fast and memory-efficient XML parser with the iterator interface.
  *
@@ -97,6 +99,9 @@ class XMLParser implements \Iterator
 		return array_shift($this->nodesStack);
 	}
 
+	/**
+	 * @throws ParsingError
+	 */
 	public function next(): void
 	{
 		// we still have some already parsed nodes on the stack
@@ -107,7 +112,11 @@ class XMLParser implements \Iterator
 
 		// the nodes stack has been iterated over, consume and parse the next piece of the XML stream
 		$data = stream_get_contents( $this->stream, length: self::BATCH_READ_SIZE );
-		xml_parse($this->parser, $data, is_final: $data === false);
+		$res = xml_parse($this->parser, $data, is_final: $data === false);
+
+		if ($res === 0 /* returns 0 on failure */ ) {
+			throw ParsingError::fromParserInstance($this->parser);
+		}
 
 		// we're done with reading and parsing the stream, close the XML parser instance
 		if ($data === false) {
