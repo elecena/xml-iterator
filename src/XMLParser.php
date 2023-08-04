@@ -25,7 +25,7 @@ class XMLParser implements \Iterator
 	private int $index;
 
 	// how much data to read from the XML at a time
-	const BATCH_READ_SIZE = 256;
+	const BATCH_READ_SIZE = 4096;
 
 	/**
 	 * @param resource $stream
