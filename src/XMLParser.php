@@ -143,7 +143,9 @@ class XMLParser implements \Iterator
 	{
 		// the nodes stack has been iterated over, consume and parse the next piece of the XML stream
 		$data = stream_get_contents($this->stream, length: self::BATCH_READ_SIZE);
-		$res = xml_parse($this->parser, $data, is_final: $data === false);
+		$isFinal = ($data === false);
+
+		$res = xml_parse($this->parser, $data, $isFinal);
 
 		if ($res === 0 /* returns 0 on failure */) {
 			// take more details from the parser instance and throw an exception
@@ -151,7 +153,7 @@ class XMLParser implements \Iterator
 		}
 
 		// we're done with reading and parsing the stream, close the XML parser instance
-		if ($data === false) {
+		if ($isFinal) {
 			$this->close();
 		}
 	}
