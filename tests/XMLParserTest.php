@@ -4,18 +4,19 @@ use PHPUnit\Framework\TestCase;
 use Elecena\XmlIterator\XMLParser;
 use Elecena\XmlIterator\Nodes\XMLNodeContent;
 use Elecena\XmlIterator\Nodes\XMLNodeOpen;
+use Elecena\XmlIterator\Nodes\XMLNodeClose;
 
 class XMLParserTest extends TestCase
 {
-	private function openFixture() {
-		return fopen( __DIR__ . '/fixtures/wp-sitemap.xml', mode: 'rt');
+	private function getParser(): XMLParser {
+		$stream = fopen( __DIR__ . '/fixtures/wp-sitemap.xml', mode: 'rt');
+		return new XMLParser(stream: $stream);
 	}
 
 	public function testParsesTheOpeningTags(): void {
-		$parser = new XMLParser(stream: $this->openFixture());
 		$sitemapIndex = null;
 
-		foreach($parser as $item) {
+		foreach($this->getParser() as $item) {
 			if ($item instanceof XMLNodeOpen && $item->tagName === 'sitemapindex') {
 				$sitemapIndex = $item;
 				break;
@@ -27,11 +28,23 @@ class XMLParserTest extends TestCase
 		$this->assertEquals('http://www.sitemaps.org/schemas/sitemap/0.9', $sitemapIndex->tagAttributes['xmlns'] ?? null);
 	}
 
+	public function testParsesTheClosingTags(): void {
+		$closingTag = null;
+
+		foreach($this->getParser() as $item) {
+			if ($item instanceof XMLNodeClose) {
+				$closingTag = $item;
+			}
+		}
+
+		$this->assertInstanceOf(XMLNodeClose::class, $closingTag);
+		$this->assertEquals('sitemapindex', $closingTag->tagName);
+	}
+
 	public function testParsesTheLocNodes(): void {
-		$parser = new XMLParser(stream: $this->openFixture());
 		$locations = [];
 
-		foreach($parser as $item) {
+		foreach($this->getParser() as $item) {
 			if ($item instanceof XMLNodeContent && $item->tagName === 'loc') {
 				$locations[] = $item->tagContent;
 			}

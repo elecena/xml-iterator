@@ -69,6 +69,7 @@ class XMLParser implements \Iterator
 		$this->currentTagName = $tagName;
 		$this->currentTagAttributes = $attributes;
 
+		// append to the stack of items to iterate over
 		$this->nodesStack[] = new Nodes\XMLNodeOpen(
 			tagName: $this->currentTagName,
 			tagAttributes: $this->currentTagAttributes,
@@ -85,9 +86,9 @@ class XMLParser implements \Iterator
 	}
 
 	public function endXML(\XMLParser $parser, string $tagName): void {
-		// append to the stack of items to iterate over (for nodes without the text content)
+		// append to the stack of items to iterate over
 		$this->nodesStack[] = new Nodes\XMLNodeClose(
-			tagName: $this->currentTagName,
+			tagName: $tagName,
 		);
 	}
 
