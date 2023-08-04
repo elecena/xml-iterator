@@ -11,7 +11,6 @@ use Elecena\XmlIterator\Exceptions\ParsingError;
  */
 class XMLParser implements \Iterator
 {
-
 	private \XMLParser $parser;
 
 	private ?string $currentTagName = null;
@@ -115,7 +114,8 @@ class XMLParser implements \Iterator
 		$res = xml_parse($this->parser, $data, is_final: $data === false);
 
 		if ($res === 0 /* returns 0 on failure */ ) {
-			throw ParsingError::fromParserInstance($this->parser);
+			// take more details from the parser instance and throw an exception
+			throw ParsingError::fromParserInstance($this->parser, is_string($data) ? $data : null);
 		}
 
 		// we're done with reading and parsing the stream, close the XML parser instance
@@ -134,6 +134,9 @@ class XMLParser implements \Iterator
 		return !empty($this->nodesStack);
 	}
 
+	/**
+	 * @throws ParsingError
+	 */
 	public function rewind(): void
 	{
 		$this->setUp();
