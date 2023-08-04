@@ -109,19 +109,7 @@ class XMLParser implements \Iterator
 			return;
 		}
 
-		// the nodes stack has been iterated over, consume and parse the next piece of the XML stream
-		$data = stream_get_contents( $this->stream, length: self::BATCH_READ_SIZE );
-		$res = xml_parse($this->parser, $data, is_final: $data === false);
-
-		if ($res === 0 /* returns 0 on failure */ ) {
-			// take more details from the parser instance and throw an exception
-			throw ParsingError::fromParserInstance($this->parser, is_string($data) ? $data : null);
-		}
-
-		// we're done with reading and parsing the stream, close the XML parser instance
-		if ($data === false) {
-			$this->close();
-		}
+		$this->parseNextChunk();
 	}
 
 	public function key(): int
@@ -140,6 +128,31 @@ class XMLParser implements \Iterator
 	public function rewind(): void
 	{
 		$this->setUp();
-		$this->next();
+		$this->parseNextChunk();
+	}
+
+	/**
+	 * Takes the next chunk of data from the XML stream and parses the data.
+	 *
+	 * Callbacks are called, nodes are pushed to the stack and iterator can go over them.
+	 *
+	 * @return void
+	 * @throws ParsingError
+	 */
+	private function parseNextChunk(): void
+	{
+		// the nodes stack has been iterated over, consume and parse the next piece of the XML stream
+		$data = stream_get_contents($this->stream, length: self::BATCH_READ_SIZE);
+		$res = xml_parse($this->parser, $data, is_final: $data === false);
+
+		if ($res === 0 /* returns 0 on failure */) {
+			// take more details from the parser instance and throw an exception
+			throw ParsingError::fromParserInstance($this->parser, is_string($data) ? $data : null);
+		}
+
+		// we're done with reading and parsing the stream, close the XML parser instance
+		if ($data === false) {
+			$this->close();
+		}
 	}
 }
