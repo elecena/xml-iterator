@@ -1,0 +1,18 @@
+{
+    "name": "elecena/xml-iterator",
+    "description": "Memory efficient and fast XML parser with iterator interface",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Elecena\\XmlIterator\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Maciej Brencz",
+            "email": "macbre@elecena.pl"
+        }
+    ],
+    "require": {}
+}
