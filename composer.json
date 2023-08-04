@@ -14,5 +14,14 @@
             "email": "macbre@elecena.pl"
         }
     ],
-    "require": {}
+    "require": {
+      "ext-xml": "*",
+      "php": "^8.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.3"
+    },
+    "scripts": {
+        "test": "phpunit --testdox"
+    }
 }
