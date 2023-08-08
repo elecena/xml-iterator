@@ -17,6 +17,13 @@ class XMLParser implements \Iterator
 	private array $currentTagAttributes = [];
 
 	/**
+	 * The stack of the XML node names as go deeper into the tree.
+	 *
+	 * @var string[]
+	 */
+	private array $nodeNamesStack = [];
+
+	/**
 	 * Holds nodes to iterate over as we parse through XML
 	 *
 	 * @var Nodes\XMLNode[]
@@ -37,6 +44,7 @@ class XMLParser implements \Iterator
 		$this->nodesQueue = [];
 		$this->currentTagName = null;
 		$this->currentTagAttributes = [];
+		$this->nodeNamesStack = [];
 
 		$this->parser = \xml_parser_create();
 
@@ -75,12 +83,14 @@ class XMLParser implements \Iterator
 			tagName: $this->currentTagName,
 			tagAttributes: $this->currentTagAttributes,
 		);
+
+		$this->nodeNamesStack[] = $tagName;
 	}
 
 	public function charXML(\XMLParser $parser, string $tagContent): void {
 		// append to the queue of items to iterate over
 		$this->nodesQueue[] = new Nodes\XMLNodeContent(
-			tagName: $this->currentTagName,
+			tagName: end($this->nodeNamesStack),
 			tagAttributes: $this->currentTagAttributes,
 			tagContent: $tagContent,
 		);
@@ -91,6 +101,9 @@ class XMLParser implements \Iterator
 		$this->nodesQueue[] = new Nodes\XMLNodeClose(
 			tagName: $tagName,
 		);
+
+		// Pop the node name off the end of stack
+		array_pop($this->nodeNamesStack);
 	}
 
 	public function current(): Nodes\XMLNode
