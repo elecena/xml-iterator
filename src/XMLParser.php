@@ -21,7 +21,7 @@ class XMLParser implements \Iterator
 	 *
 	 * @var Nodes\XMLNode[]
 	 */
-	private array $nodesStack = [];
+	private array $nodesQueue = [];
 	private int $index;
 
 	// how much data to read from the XML at a time
@@ -34,7 +34,7 @@ class XMLParser implements \Iterator
 
 	public function setUp(): void {
 		$this->index = 0;
-		$this->nodesStack = [];
+		$this->nodesQueue = [];
 		$this->currentTagName = null;
 		$this->currentTagAttributes = [];
 
@@ -70,16 +70,16 @@ class XMLParser implements \Iterator
 		$this->currentTagName = $tagName;
 		$this->currentTagAttributes = $attributes;
 
-		// append to the stack of items to iterate over
-		$this->nodesStack[] = new Nodes\XMLNodeOpen(
+		// append to the queue of items to iterate over
+		$this->nodesQueue[] = new Nodes\XMLNodeOpen(
 			tagName: $this->currentTagName,
 			tagAttributes: $this->currentTagAttributes,
 		);
 	}
 
 	public function charXML(\XMLParser $parser, string $tagContent): void {
-		// append to the stack of items to iterate over
-		$this->nodesStack[] = new Nodes\XMLNodeContent(
+		// append to the queue of items to iterate over
+		$this->nodesQueue[] = new Nodes\XMLNodeContent(
 			tagName: $this->currentTagName,
 			tagAttributes: $this->currentTagAttributes,
 			tagContent: $tagContent,
@@ -87,15 +87,15 @@ class XMLParser implements \Iterator
 	}
 
 	public function endXML(\XMLParser $parser, string $tagName): void {
-		// append to the stack of items to iterate over
-		$this->nodesStack[] = new Nodes\XMLNodeClose(
+		// append to the queue of items to iterate over
+		$this->nodesQueue[] = new Nodes\XMLNodeClose(
 			tagName: $tagName,
 		);
 	}
 
 	public function current(): Nodes\XMLNode
 	{
-		return array_shift($this->nodesStack);
+		return array_shift($this->nodesQueue);
 	}
 
 	/**
@@ -103,8 +103,8 @@ class XMLParser implements \Iterator
 	 */
 	public function next(): void
 	{
-		// we still have some already parsed nodes on the stack
-		if (!empty($this->nodesStack)) {
+		// we still have some already parsed nodes on the queue
+		if (!empty($this->nodesQueue)) {
 			$this->index++;
 			return;
 		}
@@ -119,7 +119,7 @@ class XMLParser implements \Iterator
 
 	public function valid(): bool
 	{
-		return !empty($this->nodesStack);
+		return !empty($this->nodesQueue);
 	}
 
 	/**
