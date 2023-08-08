@@ -6,7 +6,10 @@
     "autoload": {
         "psr-4": {
             "Elecena\\XmlIterator\\": "src/"
-        }
+        },
+        "classmap": [
+            "tests/"
+        ]
     },
     "authors": [
         {
