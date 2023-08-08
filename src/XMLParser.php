@@ -90,7 +90,7 @@ class XMLParser implements \Iterator
 	public function charXML(\XMLParser $parser, string $tagContent): void {
 		// append to the queue of items to iterate over
 		$this->nodesQueue[] = new Nodes\XMLNodeContent(
-			tagName: end($this->nodeNamesStack),
+			tagName: $this->currentTagName,
 			tagAttributes: $this->currentTagAttributes,
 			tagContent: $tagContent,
 		);
@@ -104,6 +104,10 @@ class XMLParser implements \Iterator
 
 		// Pop the node name off the end of stack
 		array_pop($this->nodeNamesStack);
+
+		// and update the current tag name to properly handle consecutive closing tag and whitespaces
+		// e.g. </foo>\n\n</bar>
+		$this->currentTagName = end($this->nodeNamesStack);
 	}
 
 	public function current(): Nodes\XMLNode
