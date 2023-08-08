@@ -1,14 +1,11 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-use Elecena\XmlIterator\XMLParser;
 use Elecena\XmlIterator\Exceptions\ParsingError;
 
-class XMLParserBrokenSyntaxTest extends TestCase
+class XMLParserBrokenSyntaxTest extends XMLParserTestCase
 {
-	private function getParser(): XMLParser {
-		$stream = fopen( __DIR__ . '/fixtures/broken.xml', mode: 'rt');
-		return new XMLParser(stream: $stream);
+	protected function getParserStream() {
+		return fopen( __DIR__ . '/fixtures/broken.xml', mode: 'rt');
 	}
 
 	public function testShouldThrowAnException(): void

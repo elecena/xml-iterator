@@ -1,16 +1,13 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-use Elecena\XmlIterator\XMLParser;
 use Elecena\XmlIterator\Nodes\XMLNodeContent;
 use Elecena\XmlIterator\Nodes\XMLNodeOpen;
 use Elecena\XmlIterator\Nodes\XMLNodeClose;
 
-class XMLParserTest extends TestCase
+class XMLParserTest extends XMLParserTestCase
 {
-	private function getParser(): XMLParser {
-		$stream = fopen( __DIR__ . '/fixtures/wp-sitemap.xml', mode: 'rt');
-		return new XMLParser(stream: $stream);
+	protected function getParserStream() {
+		return fopen( __DIR__ . '/fixtures/wp-sitemap.xml', mode: 'rt');
 	}
 
 	public function testParsesTheOpeningTags(): void {
