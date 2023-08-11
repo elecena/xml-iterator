@@ -62,6 +62,7 @@ class XMLParser implements \Iterator
 
 		// @see https://www.php.net/manual/en/function.xml-parser-set-option.php
 		xml_parser_set_option($this->parser, XML_OPTION_CASE_FOLDING, false);
+		xml_parser_set_option($this->parser, XML_OPTION_SKIP_WHITE, true);
 	}
 
 	private function close(): void {
