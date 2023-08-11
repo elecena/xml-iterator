@@ -26,6 +26,12 @@
         "friendsofphp/php-cs-fixer": "^3.22"
     },
     "scripts": {
-        "test": "phpunit --testdox"
+        "test": "phpunit --testdox",
+        "lint": [
+            "php-cs-fixer fix --config=.php-cs-fixer.php --dry-run --verbose"
+        ],
+        "format": [
+            "php-cs-fixer fix --config=.php-cs-fixer.php"
+        ]
     }
 }
