@@ -1,10 +1,7 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-use Elecena\XmlIterator\XMLParser;
 use Elecena\XmlIterator\Nodes\XMLNodeContent;
 use Elecena\XmlIterator\Nodes\XMLNodeOpen;
-use Elecena\XmlIterator\Nodes\XMLNodeClose;
 
 class XMLParserLargeFileTest extends XMLParserTestCase
 {

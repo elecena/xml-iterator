@@ -1,6 +1,6 @@
 <?php
 
-use Elecena\XmlIterator\Exceptions\ParsingError;
+use Elecena\XmlIterator\Nodes\XMLNodeContent;
 
 class XMLParserWhitespacesTest extends XMLParserTestCase
 {
@@ -22,7 +22,7 @@ XML);
 		$locNodesContent = [];
 
 		foreach ($this->getParser() as $item) {
-			if ($item instanceof \Elecena\XmlIterator\Nodes\XMLNodeContent && $item->name === 'loc') {
+			if ($item instanceof XMLNodeContent && $item->name === 'loc') {
 				$locNodesContent[] = $item;
 			}
 		}
