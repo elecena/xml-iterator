@@ -5,9 +5,9 @@ namespace Elecena\XmlIterator\Nodes;
 class XMLNodeClose extends XMLNode
 {
 	function __construct(
-		string $tagName
+		string $name
 	)
 	{
-		parent::__construct($tagName, tagAttributes: [], tagContent: null);
+		parent::__construct($name, attributes: [], content: null);
 	}
 }

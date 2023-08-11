@@ -17,10 +17,10 @@ class XMLParserLargeFileTest extends XMLParserTestCase
 		$urlTagsCounter = 0;
 
 		foreach($this->getParser() as $item) {
-			if ($item instanceof XMLNodeContent && $item->tagName === 'loc') {
-				$locations[] = $item->tagContent;
+			if ($item instanceof XMLNodeContent && $item->name === 'loc') {
+				$locations[] = $item->content;
 			}
-			elseif ($item instanceof XMLNodeOpen && $item->tagName === 'url') {
+			elseif ($item instanceof XMLNodeOpen && $item->name === 'url') {
 				$urlTagsCounter++;
 			}
 		}

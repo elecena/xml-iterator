@@ -5,10 +5,10 @@ namespace Elecena\XmlIterator\Nodes;
 class XMLNodeOpen extends XMLNode
 {
 	function __construct(
-		string $tagName,
-		array  $tagAttributes,
+		string $name,
+		array  $attributes,
 	)
 	{
-		parent::__construct($tagName, $tagAttributes, tagContent: null);
+		parent::__construct($name, $attributes, content: null);
 	}
 }

@@ -28,8 +28,8 @@ XML);
 		$node = null;
 
 		foreach ($this->getParser() as $item) {
-			if ($item instanceof XMLNodeContent && $item->tagName === 'description') {
-				if (trim($item->tagContent) !== '') {
+			if ($item instanceof XMLNodeContent && $item->name === 'description') {
+				if (trim($item->content) !== '') {
 					$node = $item;
 					break;
 				}
@@ -37,6 +37,6 @@ XML);
 		}
 
 		$this->assertInstanceOf(XMLNodeContent::class, $node);
-		$this->assertStringStartsWith("<p>\n      <a href=\"/mylink/article1\">", trim($node->tagContent));
+		$this->assertStringStartsWith("<p>\n      <a href=\"/mylink/article1\">", trim($node->content));
 	}
 }

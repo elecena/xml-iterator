@@ -15,18 +15,18 @@ require 'vendor/autoload.php';
 $stream = fopen('https://elecena.pl/sitemap.xml', mode: 'rt');
 
 foreach(new XMLParser($stream) as $node) {
-    if ($node instanceof XMLNodeContent && $node->tagName === 'loc') {
-		echo "Sub-sitemap found: {$node->tagContent}\n";
+    if ($node instanceof XMLNodeContent && $node->name === 'loc') {
+		echo "Sub-sitemap found: {$node->content}\n";
     }
-	elseif ($node instanceof XMLNodeOpen && $node->tagName === 'sitemapindex') {
-		echo "Sitemap index node found, attributes: " . print_r($node->tagAttributes, return: true) . "\n";
+	elseif ($node instanceof XMLNodeOpen && $node->name === 'sitemapindex') {
+		echo "Sitemap index node found, attributes: " . print_r($node->attributes, return: true) . "\n";
 	}
 }
 
 fclose($stream);
 ```
 
-will give you:
+The above will give you:
 
 ```
 Sitemap index node found: Array

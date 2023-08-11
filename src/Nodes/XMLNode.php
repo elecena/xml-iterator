@@ -7,8 +7,8 @@ namespace Elecena\XmlIterator\Nodes;
  */
 abstract class XMLNode {
 	function __construct(
-		public string $tagName,
-		public array $tagAttributes = [],
-		public ?string $tagContent = null,
+		public string  $name,
+		public array   $attributes = [],
+		public ?string $content = null,
 	) {}
 }
