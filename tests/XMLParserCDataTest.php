@@ -28,12 +28,10 @@ XML);
     {
         $node = null;
 
-        foreach ($this->getParser() as $item) {
-            if ($item instanceof XMLNodeContent && $item->name === 'description') {
-                if (trim($item->content) !== '') {
-                    $node = $item;
-                    break;
-                }
+        foreach ($this->getParser()->iterateByNodeContent(name: 'description') as $item) {
+            if (trim($item->content) !== '') {
+                $node = $item;
+                break;
             }
         }
 
