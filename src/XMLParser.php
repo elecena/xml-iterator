@@ -3,6 +3,7 @@
 namespace Elecena\XmlIterator;
 
 use Elecena\XmlIterator\Exceptions\ParsingError;
+use Elecena\XmlIterator\Nodes\XMLNodeContent;
 
 /**
  * Implements a fast and memory-efficient XML parser with the iterator interface.
@@ -179,6 +180,21 @@ class XMLParser implements \Iterator
         // we're done with reading and parsing the stream, close the XML parser instance
         if ($isFinal) {
             $this->close();
+        }
+    }
+
+    /**
+     * Parses the XML and yields only the @see XMLNodeContent items with matching node name
+     *
+     * @param string $name
+     * @return \Generator<XMLNodeContent>
+     */
+    public function iterateByNodeContent(string $name): \Generator
+    {
+        foreach($this as $node) {
+            if ($node instanceof XMLNodeContent && $node->name === $name) {
+                yield $node;
+            }
         }
     }
 }
