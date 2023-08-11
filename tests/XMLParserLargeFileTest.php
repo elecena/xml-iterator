@@ -26,4 +26,20 @@ class XMLParserLargeFileTest extends XMLParserTestCase
         $this->assertCount(1857, $locations);
         $this->assertEquals(1857, $urlTagsCounter);
     }
+
+    public function testIterateByNodeContent()
+    {
+        $cnt = 0;
+
+        // <url><loc>https://sklepzamel.com/produkt/sonda-temperatury-ntc-03/</loc></url>
+        foreach($this->getParser()->iterateByNodeContent(name: 'loc') as $node) {
+            $this->assertInstanceOf(XMLNodeContent::class, $node);
+            $this->assertEquals('loc', $node->name);
+            $this->assertStringStartsWith('http', $node->content);
+
+            $cnt++;
+        }
+
+        $this->assertEquals(1857, $cnt);
+    }
 }
