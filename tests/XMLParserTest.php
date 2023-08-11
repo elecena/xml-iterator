@@ -14,15 +14,15 @@ class XMLParserTest extends XMLParserTestCase
 		$sitemapIndex = null;
 
 		foreach($this->getParser() as $item) {
-			if ($item instanceof XMLNodeOpen && $item->tagName === 'sitemapindex') {
+			if ($item instanceof XMLNodeOpen && $item->name === 'sitemapindex') {
 				$sitemapIndex = $item;
 				break;
 			}
 		}
 
 		$this->assertInstanceOf(XMLNodeOpen::class, $sitemapIndex);
-		$this->assertEquals('sitemapindex', $sitemapIndex->tagName);
-		$this->assertEquals('http://www.sitemaps.org/schemas/sitemap/0.9', $sitemapIndex->tagAttributes['xmlns'] ?? null);
+		$this->assertEquals('sitemapindex', $sitemapIndex->name);
+		$this->assertEquals('http://www.sitemaps.org/schemas/sitemap/0.9', $sitemapIndex->attributes['xmlns'] ?? null);
 	}
 
 	public function testParsesTheClosingTags(): void {
@@ -35,15 +35,15 @@ class XMLParserTest extends XMLParserTestCase
 		}
 
 		$this->assertInstanceOf(XMLNodeClose::class, $closingTag);
-		$this->assertEquals('sitemapindex', $closingTag->tagName);
+		$this->assertEquals('sitemapindex', $closingTag->name);
 	}
 
 	public function testParsesTheLocNodes(): void {
 		$locations = [];
 
 		foreach($this->getParser() as $item) {
-			if ($item instanceof XMLNodeContent && $item->tagName === 'loc') {
-				$locations[] = $item->tagContent;
+			if ($item instanceof XMLNodeContent && $item->name === 'loc') {
+				$locations[] = $item->content;
 			}
 		}
 

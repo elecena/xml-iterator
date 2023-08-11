@@ -22,12 +22,12 @@ XML);
 		$locNodesContent = [];
 
 		foreach ($this->getParser() as $item) {
-			if ($item instanceof XMLNodeContent && $item->tagName === 'loc') {
+			if ($item instanceof XMLNodeContent && $item->name === 'loc') {
 				$locNodesContent[] = $item;
 			}
 		}
 
 		$this->assertCount(1, $locNodesContent);
-		$this->assertEquals('https://elecena.pl/sitemap-001-search.xml.gz', $locNodesContent[0]->tagContent);
+		$this->assertEquals('https://elecena.pl/sitemap-001-search.xml.gz', $locNodesContent[0]->content);
 	}
 }

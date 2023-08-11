@@ -62,7 +62,6 @@ class XMLParser implements \Iterator
 
 		// @see https://www.php.net/manual/en/function.xml-parser-set-option.php
 		xml_parser_set_option($this->parser, XML_OPTION_CASE_FOLDING, false);
-		xml_parser_set_option($this->parser, XML_OPTION_SKIP_WHITE, true);
 	}
 
 	private function close(): void {
@@ -81,8 +80,8 @@ class XMLParser implements \Iterator
 
 		// append to the queue of items to iterate over
 		$this->nodesQueue[] = new Nodes\XMLNodeOpen(
-			tagName: $this->currentTagName,
-			tagAttributes: $this->currentTagAttributes,
+			name: $this->currentTagName,
+			attributes: $this->currentTagAttributes,
 		);
 
 		$this->nodeNamesStack[] = $tagName;
@@ -91,16 +90,16 @@ class XMLParser implements \Iterator
 	public function charXML(\XMLParser $parser, string $tagContent): void {
 		// append to the queue of items to iterate over
 		$this->nodesQueue[] = new Nodes\XMLNodeContent(
-			tagName: $this->currentTagName,
-			tagAttributes: $this->currentTagAttributes,
-			tagContent: $tagContent,
+			name: $this->currentTagName,
+			attributes: $this->currentTagAttributes,
+			content: $tagContent,
 		);
 	}
 
 	public function endXML(\XMLParser $parser, string $tagName): void {
 		// append to the queue of items to iterate over
 		$this->nodesQueue[] = new Nodes\XMLNodeClose(
-			tagName: $tagName,
+			name: $tagName,
 		);
 
 		// Pop the node name off the end of stack
