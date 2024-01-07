@@ -88,6 +88,7 @@ class XMLParser implements \Iterator
         $this->nodesQueue[] = new Nodes\XMLNodeOpen(
             name: $this->currentTagName,
             attributes: $this->currentTagAttributes,
+            parentName: end($this->nodeNamesStack) ?: null
         );
 
         $this->nodeNamesStack[] = $tagName;
@@ -100,18 +101,20 @@ class XMLParser implements \Iterator
             name: $this->currentTagName,
             attributes: $this->currentTagAttributes,
             content: $tagContent,
+            parentName: array_slice($this->nodeNamesStack, -2, 1)[0] ?: null
         );
     }
 
     public function endXML(\XMLParser $parser, string $tagName): void
     {
+        // Pop the node name off the end of stack
+        array_pop($this->nodeNamesStack);
+
         // append to the queue of items to iterate over
         $this->nodesQueue[] = new Nodes\XMLNodeClose(
             name: $tagName,
+            parentName: end($this->nodeNamesStack) ?: null
         );
-
-        // Pop the node name off the end of stack
-        array_pop($this->nodeNamesStack);
 
         // and update the current tag name to properly handle consecutive closing tag and whitespaces
         // e.g. </foo>\n\n</bar>

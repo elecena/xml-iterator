@@ -11,6 +11,7 @@ abstract class XMLNode
         public string  $name,
         public array   $attributes = [],
         public ?string $content = null,
+        public ?string $parentName = null,
     ) {
     }
 }
