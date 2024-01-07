@@ -30,5 +30,6 @@ XML);
 
         $this->assertCount(1, $locNodesContent);
         $this->assertEquals('https://elecena.pl/sitemap-001-search.xml.gz', $locNodesContent[0]->content);
+        $this->assertEquals('sitemap', $locNodesContent[0]->parentName);
     }
 }

@@ -24,6 +24,7 @@ class XMLParserTest extends XMLParserTestCase
 
         $this->assertInstanceOf(XMLNodeOpen::class, $sitemapIndex);
         $this->assertEquals('sitemapindex', $sitemapIndex->name);
+        $this->assertNull($sitemapIndex->parentName, 'Root nodes will get null as their parent');
         $this->assertEquals('http://www.sitemaps.org/schemas/sitemap/0.9', $sitemapIndex->attributes['xmlns'] ?? null);
     }
 
@@ -39,6 +40,7 @@ class XMLParserTest extends XMLParserTestCase
 
         $this->assertInstanceOf(XMLNodeClose::class, $closingTag);
         $this->assertEquals('sitemapindex', $closingTag->name);
+        $this->assertNull($closingTag->parentName);
     }
 
     public function testParsesTheLocNodes(): void
@@ -48,6 +50,7 @@ class XMLParserTest extends XMLParserTestCase
         foreach($this->getParser() as $item) {
             if ($item instanceof XMLNodeContent && $item->name === 'loc') {
                 $locations[] = $item->content;
+                $this->assertEquals('sitemap', $item->parentName);
             }
         }
 

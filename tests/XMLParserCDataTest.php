@@ -37,5 +37,6 @@ XML);
 
         $this->assertInstanceOf(XMLNodeContent::class, $node);
         $this->assertStringStartsWith("<p>\n      <a href=\"/mylink/article1\">", trim($node->content));
+        $this->assertEquals('item', $node->parentName);
     }
 }

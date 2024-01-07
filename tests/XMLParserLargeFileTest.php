@@ -35,6 +35,7 @@ class XMLParserLargeFileTest extends XMLParserTestCase
         foreach($this->getParser()->iterateByNodeContent(name: 'loc') as $node) {
             $this->assertInstanceOf(XMLNodeContent::class, $node);
             $this->assertEquals('loc', $node->name);
+            $this->assertEquals('url', $node->parentName);
             $this->assertStringStartsWith('http', $node->content);
 
             $cnt++;
