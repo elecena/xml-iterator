@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <!-- https://www.reichelt.com/sitemap.xml -->
+    <sitemap>
+        <loc>https://www.reichelt.com/index.html?ACTION=1004&amp;SITE=1</loc>
+    </sitemap>
+    <sitemap>
+        <loc>https://www.reichelt.com/index.html?ACTION=1004&amp;SITE=2</loc>
+    </sitemap>
+    <sitemap>
+        <loc>https://www.reichelt.com/index.html?ACTION=1004&amp;SITE=3</loc>
+    </sitemap>
+    <sitemap>
+        <loc>https://www.reichelt.com/index.html?ACTION=1004&amp;SITE=4</loc>
+    </sitemap>
+    <sitemap>
+        <loc>https://www.reichelt.de/magazin/sitemap.xml</loc>
+    </sitemap>
+    <sitemap>
+        <loc>https://www.reichelt.com/magazin/fr/sitemap.xml</loc>
+    </sitemap>
+    <sitemap>
+        <loc>https://www.reichelt.com/magazin/nl/sitemap.xml</loc>
+    </sitemap>
+    <sitemap>
+        <loc>https://www.reichelt.com/magazin/en/sitemap.xml</loc>
+    </sitemap>
+</sitemapindex>
