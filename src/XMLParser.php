@@ -17,6 +17,8 @@ class XMLParser implements \Iterator
     private ?string $currentTagName = null;
     private array $currentTagAttributes = [];
 
+    private string $currentTagContent = '';
+
     /**
      * The stack of the XML node names as go deeper into the tree.
      *
@@ -84,6 +86,8 @@ class XMLParser implements \Iterator
         $this->currentTagName = $tagName;
         $this->currentTagAttributes = $attributes;
 
+        $this->currentTagContent = '';
+
         // append to the queue of items to iterate over
         $this->nodesQueue[] = new Nodes\XMLNodeOpen(
             name: $this->currentTagName,
@@ -94,19 +98,31 @@ class XMLParser implements \Iterator
         $this->nodeNamesStack[] = $tagName;
     }
 
+    /**
+     * The XML parser "emits" separate characters when the node has the content with XML entities.
+     *
+     * For instance: <loc>https://example.com/index.html?ACTION=1004&amp;SITE=3</loc>
+     *
+     * Would emit: 'https://example.com/index.html?ACTION=1004', '&' and 'SITE=3' separately.
+     *
+     * So, just accumulate the characters as we're getting them and "emit" the XMLNodeContent instance
+     * when the node is closed.
+     */
     public function charXML(\XMLParser $parser, string $tagContent): void
+    {
+        $this->currentTagContent .= $tagContent;
+    }
+
+    public function endXML(\XMLParser $parser, string $tagName): void
     {
         // append to the queue of items to iterate over
         $this->nodesQueue[] = new Nodes\XMLNodeContent(
             name: $this->currentTagName,
             attributes: $this->currentTagAttributes,
-            content: $tagContent,
+            content: $this->currentTagContent,
             parentName: array_slice($this->nodeNamesStack, -2, 1)[0] ?: null
         );
-    }
 
-    public function endXML(\XMLParser $parser, string $tagName): void
-    {
         // Pop the node name off the end of stack
         array_pop($this->nodeNamesStack);
 

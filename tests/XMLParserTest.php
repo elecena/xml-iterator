@@ -47,11 +47,9 @@ class XMLParserTest extends XMLParserTestCase
     {
         $locations = [];
 
-        foreach($this->getParser() as $item) {
-            if ($item instanceof XMLNodeContent && $item->name === 'loc') {
-                $locations[] = $item->content;
-                $this->assertEquals('sitemap', $item->parentName);
-            }
+        foreach($this->getParser()->iterateByNodeContent('loc') as $item) {
+            $locations[] = $item->content;
+            $this->assertEquals('sitemap', $item->parentName);
         }
 
         $this->assertCount(8, $locations);
