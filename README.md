@@ -1,4 +1,6 @@
 # xml-iterator
+[![Test](https://github.com/elecena/xml-iterator/actions/workflows/php.yml/badge.svg)](https://github.com/elecena/xml-iterator/actions/workflows/php.yml)
+
 Memory efficient and fast XML parser with [the iterator interface](https://www.php.net/manual/en/class.iterator.php).
 
 ## Usage example
