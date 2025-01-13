@@ -62,9 +62,8 @@ class XMLParser implements \Iterator
          * Once the iterator goes through them all, the self::next() method
          * will read and parse the next portion of the input XML stream.
          */
-        xml_set_object($this->parser, $this);
-        xml_set_element_handler($this->parser, 'startXML', 'endXML');
-        xml_set_character_data_handler($this->parser, 'charXML');
+        xml_set_element_handler($this->parser, [$this,'startXML'], [$this, 'endXML']);
+        xml_set_character_data_handler($this->parser, [$this,'charXML']);
 
         // @see https://www.php.net/manual/en/function.xml-parser-set-option.php
         xml_parser_set_option($this->parser, XML_OPTION_CASE_FOLDING, false);
