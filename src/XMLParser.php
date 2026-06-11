@@ -19,6 +19,8 @@ class XMLParser implements \Iterator
 
     private string $currentTagContent = '';
 
+    private bool $streamFinished = false;
+
     /**
      * The stack of the XML node names as go deeper into the tree.
      *
@@ -51,6 +53,7 @@ class XMLParser implements \Iterator
         $this->currentTagName = null;
         $this->currentTagAttributes = [];
         $this->nodeNamesStack = [];
+        $this->streamFinished = false;
 
         $this->parser = \xml_parser_create();
 
@@ -179,25 +182,39 @@ class XMLParser implements \Iterator
      *
      * Callbacks are called, nodes are pushed to the stack and iterator can go over them.
      *
+     * Loops until at least one node is queued or the stream is exhausted.
+     * This handles compressed or network streams that may return empty reads mid-stream
+     * (e.g. zlib flush markers or TCP packet boundaries) without signalling EOF.
+     *
      * @return void
      * @throws ParsingError
      */
     private function parseNextChunk(): void
     {
-        // the nodes stack has been iterated over, consume and parse the next piece of the XML stream
-        $data = stream_get_contents($this->stream, length: self::BATCH_READ_SIZE);
-        $isFinal = ($data === false);
-
-        $res = xml_parse($this->parser, $data, $isFinal);
-
-        if ($res === 0 /* returns 0 on failure */) {
-            // take more details from the parser instance and throw an exception
-            throw ParsingError::fromParserInstance($this->parser, is_string($data) ? $data : null);
+        if ($this->streamFinished) {
+            return;
         }
 
-        // we're done with reading and parsing the stream, close the XML parser instance
-        if ($isFinal) {
-            $this->close();
+        while (empty($this->nodesQueue)) {
+            $data = stream_get_contents($this->stream, length: self::BATCH_READ_SIZE);
+            $isFinal = ($data === false || feof($this->stream));
+
+            if ($data === false) {
+                $data = '';
+            }
+
+            $res = xml_parse($this->parser, $data, $isFinal);
+
+            if ($res === 0 /* returns 0 on failure */) {
+                // take more details from the parser instance and throw an exception
+                throw ParsingError::fromParserInstance($this->parser, $data !== '' ? $data : null);
+            }
+
+            if ($isFinal) {
+                $this->streamFinished = true;
+                $this->close();
+                return;
+            }
         }
     }
 
