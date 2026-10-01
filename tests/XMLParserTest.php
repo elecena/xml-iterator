@@ -15,7 +15,7 @@ class XMLParserTest extends XMLParserTestCase
     {
         $sitemapIndex = null;
 
-        foreach($this->getParser() as $item) {
+        foreach ($this->getParser() as $item) {
             if ($item instanceof XMLNodeOpen && $item->name === 'sitemapindex') {
                 $sitemapIndex = $item;
                 break;
@@ -32,7 +32,7 @@ class XMLParserTest extends XMLParserTestCase
     {
         $closingTag = null;
 
-        foreach($this->getParser() as $item) {
+        foreach ($this->getParser() as $item) {
             if ($item instanceof XMLNodeClose) {
                 $closingTag = $item;
             }
@@ -47,7 +47,7 @@ class XMLParserTest extends XMLParserTestCase
     {
         $locations = [];
 
-        foreach($this->getParser()->iterateByNodeContent('loc') as $item) {
+        foreach ($this->getParser()->iterateByNodeContent('loc') as $item) {
             $locations[] = $item->content;
             $this->assertEquals('sitemap', $item->parentName);
         }

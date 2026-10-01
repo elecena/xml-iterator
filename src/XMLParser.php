@@ -225,7 +225,7 @@ class XMLParser implements \Iterator
      */
     public function iterateByNodeContent(string $name): \Generator
     {
-        foreach($this as $node) {
+        foreach ($this as $node) {
             if ($node instanceof XMLNodeContent && $node->name === $name) {
                 yield $node;
             }

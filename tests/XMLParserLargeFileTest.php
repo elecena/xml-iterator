@@ -15,7 +15,7 @@ class XMLParserLargeFileTest extends XMLParserTestCase
         $locations = [];
         $urlTagsCounter = 0;
 
-        foreach($this->getParser() as $item) {
+        foreach ($this->getParser() as $item) {
             if ($item instanceof XMLNodeContent && $item->name === 'loc') {
                 $locations[] = $item->content;
             } elseif ($item instanceof XMLNodeOpen && $item->name === 'url') {
@@ -32,7 +32,7 @@ class XMLParserLargeFileTest extends XMLParserTestCase
         $cnt = 0;
 
         // <url><loc>https://sklepzamel.com/produkt/sonda-temperatury-ntc-03/</loc></url>
-        foreach($this->getParser()->iterateByNodeContent(name: 'loc') as $node) {
+        foreach ($this->getParser()->iterateByNodeContent(name: 'loc') as $node) {
             $this->assertInstanceOf(XMLNodeContent::class, $node);
             $this->assertEquals('loc', $node->name);
             $this->assertEquals('url', $node->parentName);
