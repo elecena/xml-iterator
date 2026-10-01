@@ -15,7 +15,7 @@ class XMLParserEntitiesTest extends XMLParserTestCase
     {
         $locations = [];
 
-        foreach($this->getParser()->iterateByNodeContent('loc') as $item) {
+        foreach ($this->getParser()->iterateByNodeContent('loc') as $item) {
             $locations[] = $item->content;
         }
 
