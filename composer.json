@@ -22,7 +22,7 @@
       "php": "^8.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "^10.3 || ^11.5",
+        "phpunit/phpunit": "12.x",
         "friendsofphp/php-cs-fixer": "^3.22"
     },
     "scripts": {
