@@ -74,7 +74,6 @@ class XMLParser implements \Iterator
 
     private function close(): void
     {
-        xml_parser_free($this->parser);
     }
 
     /**
