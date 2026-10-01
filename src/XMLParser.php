@@ -72,7 +72,9 @@ class XMLParser implements \Iterator
         xml_parser_set_option($this->parser, XML_OPTION_CASE_FOLDING, false);
     }
 
-    private function close(): void {}
+    private function close(): void
+    {
+    }
 
     /**
      * @param \XMLParser $parser
