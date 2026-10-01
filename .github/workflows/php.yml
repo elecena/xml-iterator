@@ -22,7 +22,7 @@ jobs:
         - '8.5'
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v7
 
     - name: Install PHP
       uses: shivammathur/setup-php@v2
